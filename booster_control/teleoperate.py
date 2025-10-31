@@ -21,13 +21,13 @@ def teleop(
     # Initialize the T1 SE3 keyboard controller with the viewer
     if renderer == "mjviewer":
         keyboard_controller = Se3Keyboard_Pynput(
-            renderer=env.unwrapped.mujoco_renderer,
+            renderer=env.unwrapped.mujoco_renderer, # type: ignore
             pos_sensitivity=pos_sensitivity,
             rot_sensitivity=rot_sensitivity,
         )
     else:
         keyboard_controller = Se3Keyboard(
-            renderer=env.unwrapped.mujoco_renderer,
+            renderer=env.unwrapped.mujoco_renderer, # type: ignore
             pos_sensitivity=pos_sensitivity,
             rot_sensitivity=rot_sensitivity,
         )
