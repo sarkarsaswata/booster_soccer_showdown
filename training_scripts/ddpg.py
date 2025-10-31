@@ -59,7 +59,7 @@ class DDPG_FF(torch.nn.Module):
             n_features,
             action_space.shape[0],
             *shared_inputs,
-            F.tanh,
+            F.tanh, # type: ignore
         )
         self.critic = NeuralNetwork(
             n_features + action_space.shape[0], 1, *shared_inputs
@@ -69,7 +69,7 @@ class DDPG_FF(torch.nn.Module):
             n_features,
             action_space.shape[0],
             *shared_inputs,
-            F.tanh,
+            F.tanh, # type: ignore
         )
         self.target_critic = NeuralNetwork(
             n_features + action_space.shape[0], 1, *shared_inputs
@@ -149,7 +149,7 @@ class DDPG_FF(torch.nn.Module):
 
         return critic_loss.item(), actor_loss.item()
 
-    def train(self, states, actions, rewards, next_states, dones, epochs):
+    def train(self, states, actions, rewards, next_states, dones, epochs): # type: ignore
         total_critic_loss = 0
         total_actor_loss = 0
 
