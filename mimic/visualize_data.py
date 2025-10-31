@@ -21,7 +21,7 @@ def main():
     # --- Load trajectory ---
     try:
         data_npz = np.load(args.npz, allow_pickle=False)
-    except:
+    except:  # noqa: E722
         file_name = hf_hub_download(
                     repo_id="SaiResearch/booster_dataset",
                     filename=f"soccer/{args.robot}/{args.npz}",
@@ -44,8 +44,8 @@ def main():
     dt_frame = 1.0 / fps
 
     # --- Load model & data ---
-    model = mujoco.MjModel.from_xml_path(f"{HERE}/assets/booster_t1/{args.robot}.xml")
-    data = mujoco.MjData(model)
+    model = mujoco.MjModel.from_xml_path(f"{HERE}/assets/booster_t1/{args.robot}.xml") # type: ignore
+    data = mujoco.MjData(model) # type: ignore
 
     T, nq = qpos_traj.shape
     if nq != model.nq:
@@ -53,7 +53,7 @@ def main():
 
     # Start from first pose
     data.qpos[:] = qpos_traj[0]
-    mujoco.mj_forward(model, data)
+    mujoco.mj_forward(model, data) # type: ignore
 
     # --- Launch viewer and play ---
     print(f"Playing {T} frames at {fps:.2f} FPS...")
@@ -65,7 +65,7 @@ def main():
 
             # Set pose and forward
             data.qpos[:] = qpos_traj[t]
-            mujoco.mj_forward(model, data)
+            mujoco.mj_forward(model, data) # type: ignore
 
             # Render & pace to FPS
             v.sync()
