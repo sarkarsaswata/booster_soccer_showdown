@@ -1,7 +1,13 @@
 from torch import nn
 import torch
-import os
-import numpy as np
+
+def add_weight_noise(model, std=0.01):
+    """Add Gaussian noise to all parameters in-place."""
+    with torch.no_grad():
+        for name, param in model.named_parameters():
+            noise = torch.randn_like(param) * std
+            param.add_(noise)
+    return model
 
 class BoosterModel(nn.Module):
     """
@@ -38,6 +44,8 @@ class BoosterModel(nn.Module):
         self.model = torch.jit.load(model_path)
         self.model.eval()
 
+        add_weight_noise(self.model, std=0.01)
+
     @torch.no_grad()
     def forward(self, obs):
         """
@@ -48,7 +56,7 @@ class BoosterModel(nn.Module):
 
         obs = torch.tensor(obs, dtype=torch.float32)
         device = self.device
-        obs = obs.to(device=device, dtype=torch.float32)
+        obs = obs.to(device=device, dtype=torch.float32) # type: ignore
         N, _ = obs.shape
 
         qpos = obs[:,:12]
@@ -56,10 +64,10 @@ class BoosterModel(nn.Module):
         # branch-free decimation
 
         actions = self.model(obs)[0].clamp(-1.0, 1.0)  # (N,12)
-        targets = self.default_dof_pos.expand(N, -1) + actions
+        targets = self.default_dof_pos.expand(N, -1) + actions # type: ignore
 
         # PD control + clamp
-        ctrl = self.dof_stiffness * (targets - qpos) - self.dof_damping * qvel
-        ctrl = torch.minimum(torch.maximum(ctrl, self.ctrl_min.expand_as(ctrl)),
-                             self.ctrl_max.expand_as(ctrl))
+        ctrl = self.dof_stiffness * (targets - qpos) - self.dof_damping * qvel # type: ignore
+        ctrl = torch.minimum(torch.maximum(ctrl, self.ctrl_min.expand_as(ctrl)), # type: ignore
+                             self.ctrl_max.expand_as(ctrl)) # type: ignore
         return ctrl
