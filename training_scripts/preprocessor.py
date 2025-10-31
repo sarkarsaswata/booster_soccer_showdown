@@ -1,8 +1,6 @@
 import numpy as np
 import torch.nn.functional as F
-
 from sai_rl import SAIClient
-
 from training_scripts.ddpg import DDPG_FF
 from training_scripts.training import training_loop
 

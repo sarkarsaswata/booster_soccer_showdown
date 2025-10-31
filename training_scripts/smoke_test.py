@@ -3,13 +3,13 @@ import os
 import numpy as np
 import torch
 
+# Import model and preprocessor definition from training main (now import-safe)
+from training_scripts.ddpg import DDPG_FF  # type: ignore
+from training_scripts.preprocessor import Preprocessor  # type: ignore
+
 # Make repo root importable
 repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(repo_root)
-
-# Import model and preprocessor definition from training main (now import-safe)
-from training_scripts.ddpg import DDPG_FF  # type: ignore
-from my_main import Preprocessor  # type: ignore
 
 
 class LightBox:
