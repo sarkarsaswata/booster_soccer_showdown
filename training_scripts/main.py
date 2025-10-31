@@ -106,8 +106,8 @@ def action_function(policy):
     )
     bounded_percent = np.minimum(np.maximum(action_percent, 0), 1)
     return (
-        env.action_space.low
-        + (env.action_space.high - env.action_space.low) * bounded_percent
+        env.action_space.low # type: ignore
+        + (env.action_space.high - env.action_space.low) * bounded_percent # type: ignore
     )
 
 
