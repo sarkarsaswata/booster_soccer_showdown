@@ -1,9 +1,10 @@
-import sys, os
+import sys
+import os
 import argparse
 import gymnasium as gym
 from gymnasium import spaces
 import numpy as np
-import torch
+import torch  # noqa: F401
 import glfw
 from stable_baselines3 import TD3, SAC
 from huggingface_hub import hf_hub_download
@@ -12,8 +13,8 @@ from huggingface_hub import hf_hub_download
 repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(repo_root)
 
-import sai_mujoco  # noqa: F401  # registers envs
-from booster_control.t1_utils import LowerT1JoyStick
+import sai_mujoco  # noqa: E402, F401 # registers envs
+from booster_control.t1_utils import LowerT1JoyStick  # noqa: E402
 
 # ---------- Command→Action wrapper ----------
 class CommandActionWrapper(gym.ActionWrapper):
@@ -24,10 +25,10 @@ class CommandActionWrapper(gym.ActionWrapper):
         # RL policy outputs 3-dim command (vx, vy, yaw_rate) in [-1, 1]
         self.action_space = spaces.Box(low=-1.0, high=1.0, shape=(3,), dtype=np.float32)
 
-    def action(self, command):
+    def action(self, command): # type: ignore
         # NOTE: relies on base_env private getters; works but is brittle.
-        observation = self.base_env._get_obs()
-        info = self.base_env._get_info()
+        observation = self.base_env._get_obs() # type: ignore
+        info = self.base_env._get_info() # type: ignore
         ctrl, _ = self.lower_control.get_actions(command, observation, info)
         return ctrl
 
@@ -97,7 +98,7 @@ def main():
     base_env = gym.make(args.env, render_mode="human")
     env = CommandActionWrapper(base_env)
 
-    viewer = getattr(env.base_env.mujoco_renderer, "viewer", None)
+    viewer = getattr(env.base_env.mujoco_renderer, "viewer", None) # type: ignore
     window = getattr(viewer, "window", None) if viewer is not None else None
 
 
@@ -113,7 +114,7 @@ def main():
         ep_return = 0.0
         print(f"[Episode {ep+1}] Running. Press ESC to stop.")
 
-        viewer = getattr(env.base_env.mujoco_renderer, "viewer", None)
+        viewer = getattr(env.base_env.mujoco_renderer, "viewer", None) # type: ignore
         window = getattr(viewer, "window", None) if viewer is not None else None
 
 
