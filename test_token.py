@@ -12,32 +12,34 @@ __status__ = "Development"
 """
 
 import os
+
 import requests
+
 
 def test_sai_token():
     token = os.environ.get('SAI_TOKEN')
-    
+
     if not token:
         print("❌ SAI_TOKEN environment variable not set")
         return False
-    
-    print(f"✓ Token found: {token[:10]}...")
-    
+
+    print("✅ Token found and loaded from environment.")
+
     # Test API call
     headers = {
         'Authorization': f'Bearer {token}',
         'User-Agent': 'test-script'
     }
-    
+
     url = 'https://api.competesai.com/v1/competitions/lower-t1-penalty-kick-goalie'
-    
+
     print(f"\n🔍 Testing token against: {url}")
-    
+
     try:
         response = requests.get(url, headers=headers)
         print(f"Status Code: {response.status_code}")
         print(f"Response: {response.text[:200]}")
-        
+
         if response.status_code == 200:
             print("\n✅ Token is VALID! Authentication successful.")
             return True
@@ -51,7 +53,7 @@ def test_sai_token():
         else:
             print(f"\n⚠️  Unexpected status code: {response.status_code}")
             return False
-            
+
     except Exception as e:
         print(f"\n❌ Error: {e}")
         return False
