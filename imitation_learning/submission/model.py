@@ -1,5 +1,6 @@
-from torch import nn
 import torch
+from torch import nn
+
 
 def add_weight_noise(model, std=0.01):
     """Add Gaussian noise to all parameters in-place."""

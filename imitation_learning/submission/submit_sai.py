@@ -1,7 +1,9 @@
 import os
+
 import numpy as np
-from sai_rl import SAIClient
 from model import BoosterModel
+from sai_rl import SAIClient
+
 ## Initialize the SAI client
 sai = SAIClient(comp_id="lower-t1-penalty-kick-goalie")
 
@@ -25,8 +27,8 @@ class Preprocessor():
         q_vec = q[:,:3]
         a = v * (2.0 * q_w**2 - 1.0)
         b = np.cross(q_vec, v) * (q_w * 2.0)
-        c = q_vec * (np.dot(q_vec, v).reshape(-1,1) * 2.0)    
-        return a - b + c 
+        c = q_vec * (np.dot(q_vec, v).reshape(-1,1) * 2.0)
+        return a - b + c
 
     def modify_state(self, obs, info):
         
