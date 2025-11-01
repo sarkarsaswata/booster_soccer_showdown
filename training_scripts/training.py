@@ -1,6 +1,6 @@
-from typing import Optional, Callable
 import random
 from collections import deque
+from typing import Callable, Optional
 
 import gymnasium as gym
 import numpy as np

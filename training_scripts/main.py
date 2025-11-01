@@ -1,10 +1,9 @@
-import torch.nn.functional as F
-import numpy as np
 import os
 
-from sai_rl import SAIClient
-
+import numpy as np
+import torch.nn.functional as F
 from ddpg import DDPG_FF
+from sai_rl import SAIClient
 from training import training_loop
 
 ## Initialize the SAI client with explicit API key
@@ -31,8 +30,8 @@ class Preprocessor():
         q_vec = q[:,:3]
         a = v * (2.0 * q_w**2 - 1.0)
         b = np.cross(q_vec, v) * (q_w * 2.0)
-        c = q_vec * (np.dot(q_vec, v).reshape(-1,1) * 2.0)    
-        return a - b + c 
+        c = q_vec * (np.dot(q_vec, v).reshape(-1,1) * 2.0)
+        return a - b + c
 
     def modify_state(self, obs, info):
         
@@ -52,9 +51,9 @@ class Preprocessor():
             info["goal_team_1_rel_robot"] = np.expand_dims(info["goal_team_1_rel_robot"], axis = 0)
             info["goal_team_0_rel_ball"] = np.expand_dims(info["goal_team_0_rel_ball"], axis = 0)
             info["goal_team_1_rel_ball"] = np.expand_dims(info["goal_team_1_rel_ball"], axis = 0)
-            info["ball_xpos_rel_robot"] = np.expand_dims(info["ball_xpos_rel_robot"], axis = 0) 
-            info["ball_velp_rel_robot"] = np.expand_dims(info["ball_velp_rel_robot"], axis = 0) 
-            info["ball_velr_rel_robot"] = np.expand_dims(info["ball_velr_rel_robot"], axis = 0) 
+            info["ball_xpos_rel_robot"] = np.expand_dims(info["ball_xpos_rel_robot"], axis = 0)
+            info["ball_velp_rel_robot"] = np.expand_dims(info["ball_velp_rel_robot"], axis = 0)
+            info["ball_velr_rel_robot"] = np.expand_dims(info["ball_velr_rel_robot"], axis = 0)
             info["player_team"] = np.expand_dims(info["player_team"], axis = 0)
             info["goalkeeper_team_0_xpos_rel_robot"] = np.expand_dims(info["goalkeeper_team_0_xpos_rel_robot"], axis = 0)
             info["goalkeeper_team_0_velp_rel_robot"] = np.expand_dims(info["goalkeeper_team_0_velp_rel_robot"], axis = 0)
@@ -70,26 +69,26 @@ class Preprocessor():
         base_ang_vel = info["robot_gyro"]
         project_gravity = self.quat_rotate_inverse(quat, np.array([0.0, 0.0, -1.0]))
         
-        obs = np.hstack((robot_qpos, 
+        obs = np.hstack((robot_qpos,
                          robot_qvel,
                          project_gravity,
                          base_ang_vel,
                          info["robot_accelerometer"],
                          info["robot_velocimeter"],
-                         info["goal_team_0_rel_robot"], 
-                         info["goal_team_1_rel_robot"], 
-                         info["goal_team_0_rel_ball"], 
-                         info["goal_team_1_rel_ball"], 
-                         info["ball_xpos_rel_robot"], 
-                         info["ball_velp_rel_robot"], 
-                         info["ball_velr_rel_robot"], 
-                         info["player_team"], 
-                         info["goalkeeper_team_0_xpos_rel_robot"], 
-                         info["goalkeeper_team_0_velp_rel_robot"], 
-                         info["goalkeeper_team_1_xpos_rel_robot"], 
-                         info["goalkeeper_team_1_velp_rel_robot"], 
-                         info["target_xpos_rel_robot"], 
-                         info["target_velp_rel_robot"], 
+                         info["goal_team_0_rel_robot"],
+                         info["goal_team_1_rel_robot"],
+                         info["goal_team_0_rel_ball"],
+                         info["goal_team_1_rel_ball"],
+                         info["ball_xpos_rel_robot"],
+                         info["ball_velp_rel_robot"],
+                         info["ball_velr_rel_robot"],
+                         info["player_team"],
+                         info["goalkeeper_team_0_xpos_rel_robot"],
+                         info["goalkeeper_team_0_velp_rel_robot"],
+                         info["goalkeeper_team_1_xpos_rel_robot"],
+                         info["goalkeeper_team_1_velp_rel_robot"],
+                         info["target_xpos_rel_robot"],
+                         info["target_velp_rel_robot"],
                          info["defender_xpos"],
                          task_onehot))
 
