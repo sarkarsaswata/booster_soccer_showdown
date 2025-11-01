@@ -220,4 +220,19 @@ __marimo__/
 **/*.npz
 
 # Ignore the specific Copilot instruction file
-.github/copilot-instructions.md
+.github
+
+# Ignore all markdown files in the root directory and in the subdirectories
+/*.md
+/**/*.md
+
+# Ignore checkpoints, logs, wandb directories
+checkpoints/
+logs/
+wandb/
+
+# Ignore more directories
+out/
+models/
+markdowns/
+exp/
