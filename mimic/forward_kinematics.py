@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 import argparse
-import numpy as np
-import mujoco
-from huggingface_hub import hf_hub_download
 import pathlib
+
+import mujoco
+import numpy as np
+from huggingface_hub import hf_hub_download
 
 HERE = pathlib.Path(__file__).parent
 
@@ -94,7 +95,7 @@ def main():
 
     try:
         data_in = np.load(args.npz, allow_pickle=False)
-    except:
+    except Exception:
         file_name = hf_hub_download(
                     repo_id="SaiResearch/booster_dataset",
                     filename=f"soccer/{args.robot}/{args.npz}",

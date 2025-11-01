@@ -1,10 +1,11 @@
 import argparse
-import time
-import numpy as np
-import mujoco
-from mujoco import viewer
-from huggingface_hub import hf_hub_download
 import pathlib
+import time
+
+import mujoco
+import numpy as np
+from huggingface_hub import hf_hub_download
+from mujoco import viewer
 
 HERE = pathlib.Path(__file__).parent
 def main():
