@@ -31,26 +31,9 @@ dependencies = [
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[project.scripts]
-booster-train-rl = "booster_soccer_showdown.training.training_scripts.main:main"
-booster-train-il = "booster_soccer_showdown.imitation.imitation_learning.train:main"
-booster-teleop = "booster_soccer_showdown.control.booster_control.teleoperate:main"
-booster-test-token = "booster_soccer_showdown.scripts.test_token:main"
-
-[tool.setuptools]
-package-dir = {"" = "src"}
-
 [tool.setuptools.packages.find]
-where = ["src"]
-include = ["booster_soccer_showdown*"]
+where = ["."]
 
-[tool.setuptools.package-data]
-booster_soccer_showdown = [
-    "assets/**/*",
-    "assets/booster_t1/*.xml",
-    "assets/booster_t1/meshes/*.STL",
-    "assets/common/*.xml",
-]
 
 [[tool.uv.index]]
 name = "pytorch-cu128"
@@ -74,4 +57,4 @@ notebooks = [
 line-length = 100
 target-version = "py312"
 lint.select = ["E", "F", "I", "N", "W"]
-lint.ignore = ["E501", "F401", "E402", "W293"]
+lint.ignore = ["E501", "F401", "E402", "W293", "N812"]

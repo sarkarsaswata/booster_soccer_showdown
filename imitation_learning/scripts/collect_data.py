@@ -8,13 +8,16 @@ import sys
 repo_root = os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), ".."))
 sys.path.append(repo_root)
 
-import argparse  # noqa: E402
-import sai_mujoco  # noqa: E402, F401
-import gymnasium as gym  # noqa: E402
-import numpy as np  # noqa: E402
-from booster_control.se3_keyboard import Se3Keyboard  # noqa: E402
-from booster_control.t1_utils import LowerT1JoyStick  # noqa: E402
-from imitation_learning.scripts.preprocessor import Preprocessor  # noqa: E402
+import argparse
+
+import gymnasium as gym
+import numpy as np
+import sai_mujoco
+
+from booster_control.se3_keyboard import Se3Keyboard
+from booster_control.t1_utils import LowerT1JoyStick
+from imitation_learning.scripts.preprocessor import Preprocessor
+
 
 def get_task_one_hot(env_name):
     # Initialize task one-hot encoding
@@ -67,7 +70,7 @@ def teleop(env_name: str = "LowerT1GoaliePenaltyKick-v0", pos_sensitivity:float 
         }
 
         print(f"\nStarting episode {episode_count}")
-        # Episode loop  
+        # Episode loop
         while not (terminated or truncated):
 
             preprocessed_observation = preprocessor.modify_state(observation.copy(), info.copy(), task_one_hot)
