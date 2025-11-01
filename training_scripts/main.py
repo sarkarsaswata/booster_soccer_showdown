@@ -1,13 +1,19 @@
 import torch.nn.functional as F
 import numpy as np
+import os
 
 from sai_rl import SAIClient
 
 from ddpg import DDPG_FF
 from training import training_loop
 
-## Initialize the SAI client
-sai = SAIClient(comp_id="lower-t1-penalty-kick-goalie")
+## Initialize the SAI client with explicit API key
+api_key = os.environ.get('SAI_TOKEN')
+if not api_key:
+    raise ValueError("SAI_TOKEN environment variable not set!")
+
+print(f"Using API key: {api_key[:10]}...")
+sai = SAIClient(comp_id="lower-t1-penalty-kick-goalie", api_key=api_key)
 
 ## Make the environment
 env = sai.make_env()
