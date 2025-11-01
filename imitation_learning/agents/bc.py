@@ -5,9 +5,9 @@ import optax
 import jax.numpy as jnp
 
 import copy
-from utils.networks import GCActor, GCDetActor
+from imitation_learning.utils.networks import GCActor, GCDetActor
 from typing import Any
-from utils.flax_utils import ModuleDict, TrainState, nonpytree_field
+from imitation_learning.utils.flax_utils import ModuleDict, TrainState, nonpytree_field
 
 BC_CONFIG_DICT = {
     "agent_name": 'bc',  # Agent name.

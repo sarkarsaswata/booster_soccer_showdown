@@ -4,9 +4,9 @@ import optax
 import jax.numpy as jnp
 
 import copy
-from utils.networks import GCActor, GCValue
+from imitation_learning.utils.networks import GCActor, GCValue
 from typing import Any
-from utils.flax_utils import ModuleDict, TrainState, nonpytree_field
+from imitation_learning.utils.flax_utils import ModuleDict, TrainState, nonpytree_field
 
 HIQL_CONFIG_DICT = {
     "agent_name": 'hiql',  # Agent name.

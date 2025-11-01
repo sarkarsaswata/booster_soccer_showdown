@@ -1,8 +1,8 @@
-from .gcbc import GCBCAgent, GCBCMSEAgent, GCBC_CONFIG_DICT
-from .gciql import GCIQLAgent, GCIQL_CONFIG_DICT
-from .hiql import HIQLAgent, HIQL_CONFIG_DICT
-from .bc import BCAgent, BCMSEAgent, BC_CONFIG_DICT
-from .iql import IQLAgent, IQL_CONFIG_DICT
+from imitation_learning.agents.gcbc import GCBCAgent, GCBCMSEAgent, GCBC_CONFIG_DICT
+from imitation_learning.agents.gciql import GCIQLAgent, GCIQL_CONFIG_DICT
+from imitation_learning.agents.hiql import HIQLAgent, HIQL_CONFIG_DICT
+from imitation_learning.agents.bc import BCAgent, BCMSEAgent, BC_CONFIG_DICT
+from imitation_learning.agents.iql import IQLAgent, IQL_CONFIG_DICT
 
 agents = {
     "gcbc": (GCBCAgent, GCBC_CONFIG_DICT),
