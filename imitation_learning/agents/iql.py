@@ -1,13 +1,14 @@
 
-import jax
-import flax
-import optax
-import jax.numpy as jnp
-
 import copy
-from imitation_learning.utils.networks import GCActor, GCValue
 from typing import Any
+
+import jax
+import jax.numpy as jnp
+import optax
+from flax import core, struct
+
 from imitation_learning.utils.flax_utils import ModuleDict, TrainState, nonpytree_field
+from imitation_learning.utils.networks import GCActor, GCValue
 
 IQL_CONFIG_DICT = {
     "agent_name": 'iql',  # Agent name.
@@ -28,7 +29,7 @@ IQL_CONFIG_DICT = {
     "gc_negative": True,  # Unused (defined for compatibility with GCDataset).
 }
 
-class IQLAgent(flax.struct.PyTreeNode):
+class IQLAgent(struct.PyTreeNode):
 
     rng: Any
     network: Any
@@ -199,5 +200,5 @@ class IQLAgent(flax.struct.PyTreeNode):
         network_params = network_def.init(init_rng, **network_args)['params']
         network = TrainState.create(network_def, network_params, tx=network_tx)
 
-        return cls(rng, network=network, config=flax.core.FrozenDict(**_cfg))
+        return cls(rng, network=network, config=core.FrozenDict(**_cfg))
     

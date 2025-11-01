@@ -1,12 +1,13 @@
-import jax
-import flax
-import optax
-import jax.numpy as jnp
-
 import copy
-from imitation_learning.utils.networks import GCActor, GCValue
 from typing import Any
+
+import jax
+import jax.numpy as jnp
+import optax
+from flax import core, struct
+
 from imitation_learning.utils.flax_utils import ModuleDict, TrainState, nonpytree_field
+from imitation_learning.utils.networks import GCActor, GCValue
 
 HIQL_CONFIG_DICT = {
     "agent_name": 'hiql',  # Agent name.
@@ -35,7 +36,7 @@ HIQL_CONFIG_DICT = {
     "gc_negative": True,  # Unused (defined for compatibility with GCDataset).
 }
 
-class HIQLAgent(flax.struct.PyTreeNode):
+class HIQLAgent(struct.PyTreeNode):
 
     rng: Any
     network: Any
@@ -223,5 +224,5 @@ class HIQLAgent(flax.struct.PyTreeNode):
         params = network.params
         params['modules_target_value'] = params['modules_value']
 
-        return cls(rng, network=network, config=flax.core.FrozenDict(**_cfg))
+        return cls(rng, network=network, config=core.FrozenDict(**_cfg))
     
