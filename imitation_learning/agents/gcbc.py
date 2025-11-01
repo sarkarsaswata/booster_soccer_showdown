@@ -139,7 +139,7 @@ class GCBCMSEAgent(GCBCAgent):
 
         actions = self.network.select('actor')(batch['observations'], batch['actor_goals'], params=grad_params)
         actor_loss = optax.l2_loss(actions, batch["actions"])
-        actor_loss = actor_loss.mean() 
+        actor_loss = actor_loss.mean()
 
         actor_info = {
             'actor_loss': actor_loss,
@@ -167,7 +167,7 @@ class GCBCMSEAgent(GCBCAgent):
         actor_def = GCDetActor(
             hidden_layers=_cfg['actor_hidden_dims'],
             action_dim=action_dim,
-        ) 
+        )
 
         network_info = dict(
             actor=(actor_def, (ex_observations, ex_observations))
