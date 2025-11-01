@@ -6,14 +6,14 @@ import random
 import argparse
 import numpy as np
 
-from agents import agents
+from imitation_learning.agents import agents
 
 import jax
 import jax.numpy as jnp
-from utils.buffers import buffers, Dataset
-from utils.logging import get_exp_name, setup_wandb
-from utils.evaluation import *
-from utils.flax_utils import save_agent
+from imitation_learning.utils.buffers import buffers, Dataset
+from imitation_learning.utils.logging import get_exp_name, setup_wandb
+from imitation_learning.utils.evaluation import *  # noqa: F403
+from imitation_learning.utils.flax_utils import save_agent
 
 def sanitize_metrics(metrics):
     sanitized = {}
@@ -33,7 +33,7 @@ def main(args):
     exp_name = get_exp_name(args.env_name, args.agents)
     setup_wandb(project='booster', group=args.run_group, name=exp_name)
 
-    args.save_dir = os.path.join(args.save_dir, wandb.run.project, args.run_group, exp_name)
+    args.save_dir = os.path.join(args.save_dir, wandb.run.project, args.run_group, exp_name) # type: ignore
     os.makedirs(args.save_dir, exist_ok=True)
 
     data = {}
