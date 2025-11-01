@@ -3,8 +3,9 @@ Teleoperate T1 robot in a gymnasium environment using a keyboard.
 """
 
 import argparse
-import sai_mujoco  # noqa: F401
+
 import gymnasium as gym
+import sai_mujoco  # noqa: F401
 from se3_keyboard import Se3Keyboard, Se3Keyboard_Pynput
 from t1_utils import LowerT1JoyStick
 

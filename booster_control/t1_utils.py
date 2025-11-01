@@ -1,8 +1,9 @@
-import torch
 import mujoco
 import numpy as np
+import torch
 import yaml
 from huggingface_hub import hf_hub_download
+
 
 class LowerT1JoyStick:
     """
@@ -204,7 +205,7 @@ class LowerT1JoyStick:
         and the policy model.
 
         Args:
-            command (tuple/list): Desired (lin_vel_x, lin_vel_y, ang_vel_yaw).  
+            command (tuple/list): Desired (lin_vel_x, lin_vel_y, ang_vel_yaw).
             obs (np.array): Current observation from the environment
             info (dict): Information dict from the environment
 
@@ -241,7 +242,7 @@ class LowerT1JoyStick:
         and the policy model.
 
         Args:
-            command (tuple/list): Desired (lin_vel_x, lin_vel_y, ang_vel_yaw).  
+            command (tuple/list): Desired (lin_vel_x, lin_vel_y, ang_vel_yaw).
             obs (np.array): Current observation from the environment
             info (dict): Information dict from the environment
 

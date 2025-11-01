@@ -5,12 +5,13 @@
 
 """Keyboard controller for SE(3) control."""
 
-import numpy as np
-from collections.abc import Callable
-import glfw
-from gymnasium.envs.mujoco.mujoco_rendering import MujocoRenderer
 import threading
+from collections.abc import Callable
+
+import glfw
 import mujoco
+import numpy as np
+from gymnasium.envs.mujoco.mujoco_rendering import MujocoRenderer
 
 try:
     from pynput import keyboard as pynput_keyboard
@@ -96,7 +97,7 @@ class Se3Keyboard:
         msg += "\tMove T1 along y-axis: A/D\n"
         msg += "\tRotate T1 along z-axis: Q/E\n"
         msg += "\tReset commands: L\n"
-        msg += "\tQuit: ESC\n"      
+        msg += "\tQuit: ESC\n"
         msg += "\tReset environment: P"
         return msg
 
