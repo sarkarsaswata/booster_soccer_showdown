@@ -1,9 +1,10 @@
-import numpy as np
 import dataclasses
 from typing import Any
 
-import jax 
+import jax
+import numpy as np
 from flax.core.frozen_dict import FrozenDict
+
 
 def get_dataset_size(data):
     leaf_size = jax.tree.map(lambda arr: len(arr), data) # similar to map function in python but for Pytrees

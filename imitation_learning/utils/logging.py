@@ -1,8 +1,11 @@
 import tempfile
 from datetime import datetime
+
 import numpy as np
-import wandb
 from PIL import Image, ImageEnhance
+
+import wandb
+
 
 def get_exp_name(env_name, algorithm):
 
@@ -25,7 +28,7 @@ def setup_wandb(
 
     init_kwargs = dict(
         project=project,
-        entity=entity,  
+        entity=entity,
         tags=tags,
         group=group,
         dir=wandb_output_dir,

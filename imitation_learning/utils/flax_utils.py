@@ -1,19 +1,21 @@
 
 import functools
-import pickle
+import glob
 import os
+import pickle
 from typing import Any, Dict, Mapping, Sequence
 
-import jax
 import flax
-import glob
-import optax
 import flax.linen as nn
-import tensorflow as tf
+import flax.serialization as serialization
+import flax.struct as struct
+import jax
 import jax.numpy as jnp
+import optax
+import tensorflow as tf
 from jax.experimental import jax2tf
 
-nonpytree_field = functools.partial(flax.struct.field, pytree_node=False)
+nonpytree_field = functools.partial(struct.field, pytree_node=False)
 
 def save_agent_as_tf(agent, save_dir: str, epoch: int):
     """Save the Flax/JAX agent as a TensorFlow SavedModel.
@@ -77,7 +79,7 @@ class ModuleDict(nn.Module):
 
         return self.modules[name](*args, **kwargs)
 
-class TrainState(flax.struct.PyTreeNode):
+class TrainState(struct.PyTreeNode):
     """Custom train state for models.
 
     Attributes:
@@ -195,7 +197,7 @@ def save_agent(agent, save_dir, epoch):
     """
 
     save_dict = dict(
-        agent=flax.serialization.to_state_dict(agent),
+        agent=serialization.to_state_dict(agent),
     )
     save_path = os.path.join(save_dir, f'params_{epoch}.pkl')
     with open(save_path, 'wb') as f:
@@ -220,7 +222,7 @@ def restore_agent(agent, restore_path, restore_epoch):
     with open(restore_path, 'rb') as f:
         load_dict = pickle.load(f)
 
-    agent = flax.serialization.from_state_dict(agent, load_dict['agent'])
+    agent = serialization.from_state_dict(agent, load_dict['agent'])
 
     print(f'Restored from {restore_path}')
 

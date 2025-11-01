@@ -1,5 +1,6 @@
 import jax
 
+
 def supply_rng(f, rng=jax.random.PRNGKey(0)):
     """Helper function to split the random number generator key before each call to the function."""
 

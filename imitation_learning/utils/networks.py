@@ -1,9 +1,10 @@
 
-import distrax
-import jax.numpy as jnp
-import flax.linen as nn
+from typing import Any, Optional, Sequence
 
-from typing import Any, Sequence, Optional
+import distrax
+import flax.linen as nn
+import jax.numpy as jnp
+
 
 def default_init(scale=1.0):
     """Default kernel initializer."""
@@ -163,7 +164,7 @@ class GCDetActor(nn.Module):
 
         means = self.action_net(outputs)
 
-        return nn.tanh(means) 
+        return nn.tanh(means)
        
 class GCValue(nn.Module):
 
