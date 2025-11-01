@@ -1,19 +1,20 @@
-import os
-import wandb
-import time
-import tqdm
-import random
 import argparse
-import numpy as np
-
-from imitation_learning.agents import agents
+import os
+import random
+import time
 
 import jax
 import jax.numpy as jnp
-from imitation_learning.utils.buffers import buffers, Dataset
-from imitation_learning.utils.logging import get_exp_name, setup_wandb
-from imitation_learning.utils.evaluation import *  # noqa: F403
+import numpy as np
+import tqdm
+
+import wandb
+from imitation_learning.agents import agents
+from imitation_learning.utils.buffers import Dataset, buffers
+from imitation_learning.utils.evaluation import *
 from imitation_learning.utils.flax_utils import save_agent
+from imitation_learning.utils.logging import get_exp_name, setup_wandb
+
 
 def sanitize_metrics(metrics):
     sanitized = {}

@@ -1,20 +1,23 @@
-import sys
-import os
 import argparse
-import gymnasium as gym
-from gymnasium import spaces
-import numpy as np
-import torch  # noqa: F401
+import os
+import sys
+
 import glfw
-from stable_baselines3 import TD3, SAC
+import gymnasium as gym
+import numpy as np
+import torch
+from gymnasium import spaces
 from huggingface_hub import hf_hub_download
+from stable_baselines3 import SAC, TD3
 
 # Make repo root importable without absolute paths
 repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(repo_root)
 
-import sai_mujoco  # noqa: E402, F401  # registers envs
-from booster_control.t1_utils import LowerT1JoyStick # noqa: E402
+import sai_mujoco  # registers envs
+
+from booster_control.t1_utils import LowerT1JoyStick  # noqa: E402
+
 
 # ---------- Command→Action wrapper ----------
 class CommandActionWrapper(gym.ActionWrapper):
