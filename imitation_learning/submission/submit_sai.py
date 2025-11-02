@@ -7,6 +7,11 @@ from sai_rl import SAIClient
 ## Initialize the SAI client
 sai = SAIClient(comp_id="lower-t1-penalty-kick-goalie")
 
+print("\033[93m"
+      "⚠️  WARNING: Models must be retrained before submission.\n"
+      "   Submitting the same model again will result in a duplicate model error in SAI."
+      "\033[0m")
+
 ## Make the environment
 env = sai.make_env()
 
