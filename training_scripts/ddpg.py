@@ -4,11 +4,20 @@ import torch.nn.functional as F
 
 
 class NeuralNetwork(nn.Module):
+    """Flexible feed-forward neural network with configurable layers.
+    
+    Args:
+        n_features: Number of input features
+        n_actions: Number of output actions
+        neurons: List of hidden layer sizes
+        activation_function: Activation function for hidden layers
+        output_activation: Optional activation function for output layer
+    """
     def __init__(
         self,
-        n_features,
-        n_actions,
-        neurons,
+        n_features: int,
+        n_actions: int,
+        neurons: list[int],
         activation_function,
         output_activation=None,
     ):
@@ -33,7 +42,15 @@ class NeuralNetwork(nn.Module):
                 out_dim = neurons[index]
             self.layers.append(nn.Linear(in_dim, out_dim))
 
-    def forward(self, current_layer):
+    def forward(self, current_layer: torch.Tensor) -> torch.Tensor:
+        """Forward pass through the network.
+        
+        Args:
+            current_layer: Input tensor
+            
+        Returns:
+            Output tensor after forward pass
+        """
         for index, layer in enumerate(self.layers):
             if index < self.n_layers - 1:
                 current_layer = self.activation_function(layer(current_layer))
@@ -45,8 +62,19 @@ class NeuralNetwork(nn.Module):
 
 
 class DDPG_FF(torch.nn.Module):
+    """Deep Deterministic Policy Gradient with feed-forward networks.
+    
+    Implements DDPG algorithm with actor-critic architecture and target networks.
+    
+    Args:
+        n_features: Number of input features
+        action_space: Gymnasium action space
+        neurons: List of hidden layer sizes
+        activation_function: Activation function for hidden layers
+        learning_rate: Learning rate for both actor and critic optimizers
+    """
     def __init__(
-        self, n_features, action_space, neurons, activation_function, learning_rate
+        self, n_features: int, action_space, neurons: list[int], activation_function, learning_rate: float
     ):
         super().__init__()
         self.action_space = action_space

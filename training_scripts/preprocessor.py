@@ -15,13 +15,35 @@ Use main() to actually run training/eval which requires valid SAI credentials.
 
 
 class Preprocessor:
+    """Preprocessor for Booster Soccer Showdown observations.
+    
+    Transforms raw environment observations into a feature vector suitable
+    for training by incorporating robot state, ball state, and environment info.
+    """
     def get_task_onehot(self, info):
+        """Extract task one-hot encoding from info dict.
+        
+        Args:
+            info: Environment info dictionary
+            
+        Returns:
+            Task index array or empty array if not present
+        """
         if "task_index" in info:
             return info["task_index"]
         else:
             return np.array([])
 
-    def quat_rotate_inverse(self, q: np.ndarray, v: np.ndarray):
+    def quat_rotate_inverse(self, q: np.ndarray, v: np.ndarray) -> np.ndarray:
+        """Apply inverse quaternion rotation to a vector.
+        
+        Args:
+            q: Quaternion array of shape (N, 4) in [x, y, z, w] format
+            v: Vector to rotate, shape (3,) or broadcastable
+            
+        Returns:
+            Rotated vector array
+        """
         # q expected as (N, 4) -> [x, y, z, w]; v as (3,) or broadcastable
         q_w = q[:, [-1]]
         q_vec = q[:, :3]
@@ -30,7 +52,19 @@ class Preprocessor:
         c = q_vec * (np.dot(q_vec, v).reshape(-1, 1) * 2.0)
         return a - b + c
 
-    def modify_state(self, obs, info):
+    def modify_state(self, obs, info) -> np.ndarray:
+        """Process raw observation into feature vector.
+        
+        Combines robot qpos/qvel, projected gravity, sensor data, and environment
+        information into a single feature vector for the policy.
+        
+        Args:
+            obs: Raw observation array from environment
+            info: Info dictionary from environment
+            
+        Returns:
+            Preprocessed observation array of shape (batch_size, n_features)
+        """
         # Ensure batch dimension
         if len(obs.shape) == 1:
             obs = np.expand_dims(obs, axis=0)
@@ -98,14 +132,30 @@ class Preprocessor:
 
 
 def make_env(comp_id: str = "lower-t1-penalty-kick-goalie"):
-    """Create an SAI environment and return (env, sai_client)."""
+    """Create an SAI environment and return (env, sai_client).
+    
+    Args:
+        comp_id: Competition ID for the SAI environment
+        
+    Returns:
+        Tuple of (environment, sai_client)
+    """
     sai = SAIClient(comp_id=comp_id)
     env = sai.make_env()
     return env, sai
 
 
 def create_model(n_features: int, action_space, lr: float = 1e-4):
-    """Factory for the DDPG model with the default architecture."""
+    """Factory for the DDPG model with the default architecture.
+    
+    Args:
+        n_features: Number of input features
+        action_space: Gymnasium action space
+        lr: Learning rate for optimizers
+        
+    Returns:
+        Initialized DDPG_FF model
+    """
     return DDPG_FF(
         n_features=n_features,
         action_space=action_space,
@@ -116,7 +166,14 @@ def create_model(n_features: int, action_space, lr: float = 1e-4):
 
 
 def action_function_factory(action_space):
-    """Create the action mapping function from [-1,1] to env bounds."""
+    """Create the action mapping function from [-1,1] to env bounds.
+    
+    Args:
+        action_space: Gymnasium action space with low/high bounds
+        
+    Returns:
+        Function that maps policy outputs to environment action bounds
+    """
 
     def map_action(policy):
         expected_bounds = [-1, 1]
@@ -130,6 +187,12 @@ def action_function_factory(action_space):
 
 
 def main(train_timesteps: int = 1000, comp_id: str = "lower-t1-penalty-kick-goalie"):
+    """Main training entry point.
+    
+    Args:
+        train_timesteps: Total number of environment steps to train for
+        comp_id: Competition ID for the SAI environment
+    """
     # Create env and client (requires valid SAI credentials)
     env, sai = make_env(comp_id)
 

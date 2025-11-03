@@ -16,7 +16,13 @@ def teleop(
     rot_sensitivity: float = 1.5,
     renderer="mjviewer"
 ):
-    env = gym.make(env_name, render_mode="human", renderer=renderer)
+    try:
+        env = gym.make(env_name, render_mode="human", renderer=renderer)
+    except Exception as e:
+        print(f"Error: Failed to create environment '{env_name}': {e}")
+        print("Please check that the environment name is correct.")
+        return
+    
     lower_t1_robot = LowerT1JoyStick(env.unwrapped)
 
     # Initialize the T1 SE3 keyboard controller with the viewer
