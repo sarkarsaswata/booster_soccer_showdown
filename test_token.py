@@ -36,7 +36,7 @@ def test_sai_token():
     print(f"\n🔍 Testing token against: {url}")
 
     try:
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=10)
         print(f"Status Code: {response.status_code}")
         print(f"Response: {response.text[:200]}")
 
@@ -54,8 +54,16 @@ def test_sai_token():
             print(f"\n⚠️  Unexpected status code: {response.status_code}")
             return False
 
+    except requests.exceptions.Timeout:
+        print("\n❌ Request timeout: Could not reach the API server")
+        print("   → Check your internet connection")
+        return False
+    except requests.exceptions.ConnectionError:
+        print("\n❌ Connection error: Could not reach the API server")
+        print("   → Check your internet connection and firewall settings")
+        return False
     except Exception as e:
-        print(f"\n❌ Error: {e}")
+        print(f"\n❌ Unexpected error: {e}")
         return False
 
 if __name__ == "__main__":

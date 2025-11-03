@@ -9,13 +9,29 @@ from training import training_loop
 ## Initialize the SAI client with explicit API key
 api_key = os.environ.get('SAI_TOKEN')
 if not api_key:
-    raise ValueError("SAI_TOKEN environment variable not set!")
+    raise ValueError(
+        "SAI_TOKEN environment variable not set!\n"
+        "Please set it with: export SAI_TOKEN=your_token_here\n"
+        "Get your token from: https://competesai.com"
+    )
 
 print(f"Using API key: {api_key[:10]}...")
-sai = SAIClient(comp_id="lower-t1-penalty-kick-goalie", api_key=api_key)
+try:
+    sai = SAIClient(comp_id="lower-t1-penalty-kick-goalie", api_key=api_key)
+except Exception as e:
+    raise RuntimeError(
+        f"Failed to initialize SAI client: {e}\n"
+        "Please check your API token and network connection."
+    ) from e
 
 ## Make the environment
-env = sai.make_env()
+try:
+    env = sai.make_env()
+except Exception as e:
+    raise RuntimeError(
+        f"Failed to create environment: {e}\n"
+        "Please check your competition access permissions."
+    ) from e
 
 class Preprocessor():
 
