@@ -2,9 +2,8 @@ import tempfile
 from datetime import datetime
 
 import numpy as np
-from PIL import Image, ImageEnhance
-
 import wandb
+from PIL import Image, ImageEnhance
 
 
 def get_exp_name(env_name, algorithm):

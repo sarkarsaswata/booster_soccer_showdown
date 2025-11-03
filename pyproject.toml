@@ -3,7 +3,7 @@ name = "booster-soccer-showdown"
 version = "0.1.1"
 description = "This package contains the implementation and tools needed to participate in the booster soccer showdown competition"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.10"
 dependencies = [
     "distrax>=0.1.7",
     "flax>=0.12.0",
@@ -55,6 +55,6 @@ notebooks = [
 
 [tool.ruff]
 line-length = 100
-target-version = "py312"
+target-version = "py310"
 lint.select = ["E", "F", "I", "N", "W"]
 lint.ignore = ["E501", "F401", "E402", "W293", "N812", "N806", "F403", "N801"]

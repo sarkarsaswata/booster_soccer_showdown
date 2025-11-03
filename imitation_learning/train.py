@@ -7,8 +7,8 @@ import jax
 import jax.numpy as jnp
 import numpy as np
 import tqdm
-
 import wandb
+
 from imitation_learning.agents import agents
 from imitation_learning.utils.buffers import Dataset, buffers
 from imitation_learning.utils.evaluation import *
