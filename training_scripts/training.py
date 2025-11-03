@@ -9,13 +9,37 @@ from tqdm import tqdm
 
 
 class ReplayBuffer:
-    def __init__(self, max_size=100000):
+    """Experience replay buffer for off-policy RL algorithms.
+    
+    Stores transitions and allows sampling of random minibatches for training.
+    
+    Args:
+        max_size: Maximum number of transitions to store
+    """
+    def __init__(self, max_size: int = 100000):
         self.buffer = deque(maxlen=max_size)
 
     def add(self, state, action, reward, next_state, done):
+        """Add a transition to the buffer.
+        
+        Args:
+            state: Current state
+            action: Action taken
+            reward: Reward received
+            next_state: Next state
+            done: Whether episode ended
+        """
         self.buffer.append((state, action, reward, next_state, done))
 
-    def sample(self, batch_size):
+    def sample(self, batch_size: int):
+        """Sample a random batch of transitions.
+        
+        Args:
+            batch_size: Number of transitions to sample
+            
+        Returns:
+            Tuple of (states, actions, rewards, next_states, dones) as numpy arrays
+        """
         batch = random.sample(self.buffer, min(batch_size, len(self.buffer)))
         states, actions, rewards, next_states, dones = zip(*batch)
         return (
@@ -30,7 +54,16 @@ class ReplayBuffer:
         return len(self.buffer)
 
 
-def add_noise(action, noise_scale=0.1):
+def add_noise(action: np.ndarray, noise_scale: float = 0.1) -> np.ndarray:
+    """Add Gaussian noise to actions for exploration.
+    
+    Args:
+        action: Action array
+        noise_scale: Standard deviation of noise
+        
+    Returns:
+        Noisy action clipped to [-1, 1]
+    """
     noise = np.random.normal(0, noise_scale, size=action.shape)
     return np.clip(action + noise, -1, 1)
 
@@ -40,8 +73,17 @@ def training_loop(
     model,
     action_function: Optional[Callable] = None,
     preprocess_class: Optional[Callable] = None,
-    timesteps=1000,
+    timesteps: int = 1000,
 ):
+    """Main training loop for DDPG agent.
+    
+    Args:
+        env: Gymnasium environment
+        model: DDPG model to train
+        action_function: Optional function to map policy outputs to environment actions
+        preprocess_class: Optional preprocessor class for observations
+        timesteps: Total number of environment steps to train for
+    """
     replay_buffer = ReplayBuffer(max_size=100000)
     preprocessor = preprocess_class()
     batch_size = 64
